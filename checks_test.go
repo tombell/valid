@@ -224,10 +224,10 @@ func TestRangeLength(t *testing.T) {
 			expected: true,
 		},
 		{
-			name:     "length equals min",
+			name:     "length equals max",
 			value:    "some text",
-			min:      9,
-			max:      12,
+			min:      3,
+			max:      9,
 			expected: true,
 		},
 		{
@@ -549,6 +549,40 @@ func TestIn(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := valid.In(tt.value, tt.list...); got != tt.want {
 				t.Errorf("In() = %v, expected %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestIsDate(t *testing.T) {
+	type test struct {
+		name  string
+		value string
+		want  bool
+	}
+
+	tests := []test{
+		{
+			name:  "empty string",
+			value: "",
+			want:  false,
+		},
+		{
+			name:  "invalid date string",
+			value: "202aana",
+			want:  false,
+		},
+		{
+			name:  "valid date string",
+			value: "2024-03-18T13:34:15Z",
+			want:  true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := valid.IsDate(tt.value); got != tt.want {
+				t.Errorf("IsDate() = %v, expected %v", got, tt.want)
 			}
 		})
 	}
