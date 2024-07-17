@@ -2,6 +2,7 @@ package valid
 
 import (
 	"cmp"
+	"net/url"
 	"regexp"
 	"slices"
 	"strconv"
@@ -99,4 +100,10 @@ func In[T comparable](value T, list ...T) bool {
 func IsDate(str string) bool {
 	_, err := time.Parse(time.RFC3339, str)
 	return err == nil
+}
+
+// IsURL checks if the given string is a URL with scheme and hostname.
+func IsURL(str string) bool {
+	u, err := url.Parse(str)
+	return err == nil && u.Scheme != "" && u.Host != ""
 }

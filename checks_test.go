@@ -587,3 +587,47 @@ func TestIsDate(t *testing.T) {
 		})
 	}
 }
+
+func TestIsURL(t *testing.T) {
+	type test struct {
+		name  string
+		value string
+		want  bool
+	}
+
+	tests := []test{
+		{
+			name:  "empty string",
+			value: "",
+			want:  false,
+		},
+		{
+			name:  "invalid url string",
+			value: "202aana",
+			want:  false,
+		},
+		{
+			name:  "valid http url string",
+			value: "http://example.com",
+			want:  true,
+		},
+		{
+			name:  "valid https url string",
+			value: "https://example.com",
+			want:  true,
+		},
+		{
+			name:  "valid ftp url string",
+			value: "ftp://example.com",
+			want:  true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := valid.IsURL(tt.value); got != tt.want {
+				t.Errorf("IsURL() = %v, expected %v", got, tt.want)
+			}
+		})
+	}
+}
